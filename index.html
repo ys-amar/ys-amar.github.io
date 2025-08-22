@@ -102,8 +102,8 @@
     <div class="header">
         <div class="name" contenteditable="true">Yugeeth Amarasinghe</div>
         <div class="links">
-            <a href="https://github.com/ys-amar" contenteditable="true">github</a>
-            <a href="https://www.linkedin.com/in/yugeeth-amarasinghe/" contenteditable="true">linkedin</a>
+            <a href="https://github.com/ys-amar" target="_blank" rel="noopener noreferrer" contenteditable="true">github</a>
+            <a href="https://www.linkedin.com/in/yugeeth-amarasinghe/" target="_blank" rel="noopener noreferrer" contenteditable="true">linkedin</a>
         </div>
         <div class="bio" contenteditable="true">pre-engineering student</div>
         <div style="margin-bottom: 10px;" contenteditable="true">previously:</div>
@@ -111,13 +111,13 @@
 
     <div class="experience">
         <div class="job">
-            <div class="job-title" contenteditable="true">software consultant @ <a href="https://company1.com" contenteditable="true">freelance</a></div>
+            <div class="job-title" contenteditable="true">software consultant @ <a href="https://company1.com" target="_blank" rel="noopener noreferrer" contenteditable="true">freelance</a></div>
             <div class="job-description" contenteditable="true">Currently implementing a custom project management system for a large-scale civil construction project.</div>
             <div class="achievement" contenteditable="true"></div>
         </div>
 
         <div class="job">
-            <div class="job-title" contenteditable="true">project coordinator @ <a href="https://company2.com" contenteditable="true">AUA Engineering</a></div>
+            <div class="job-title" contenteditable="true">project coordinator @ <a href="https://company2.com" target="_blank" rel="noopener noreferrer" contenteditable="true">AUA Engineering</a></div>
             <div class="job-description" contenteditable="true">managing two sites involving several teams of people</div>
             <div class="achievement" contenteditable="true"></div>
         </div>
@@ -131,21 +131,23 @@
             }
         });
 
-        // Auto-save to localStorage
-        document.addEventListener('input', function(e) {
-            if (e.target.hasAttribute('contenteditable')) {
-                localStorage.setItem('portfolio-' + Array.from(document.querySelectorAll('[contenteditable]')).indexOf(e.target), e.target.innerHTML);
+        // Prevent links from being followed when editing
+        document.addEventListener('click', function(e) {
+            if (e.target.tagName === 'A' && e.target.hasAttribute('contenteditable')) {
+                if (e.target.isContentEditable) {
+                    e.preventDefault();
+                    e.target.focus();
+                }
             }
         });
 
-        // Load saved content
-        document.addEventListener('DOMContentLoaded', function() {
-            document.querySelectorAll('[contenteditable]').forEach(function(el, index) {
-                const saved = localStorage.getItem('portfolio-' + index);
-                if (saved) {
-                    el.innerHTML = saved;
-                }
-            });
+        // Auto-save to memory (localStorage removed for compatibility)
+        const savedContent = {};
+        document.addEventListener('input', function(e) {
+            if (e.target.hasAttribute('contenteditable')) {
+                const index = Array.from(document.querySelectorAll('[contenteditable]')).indexOf(e.target);
+                savedContent['portfolio-' + index] = e.target.innerHTML;
+            }
         });
     </script>
 </body>
